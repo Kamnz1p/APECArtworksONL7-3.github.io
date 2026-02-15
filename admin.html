@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -51,20 +51,9 @@
         }
 
         @keyframes pulse-ring {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7);
-            }
-
-            70% {
-                transform: scale(1.2);
-                box-shadow: 0 0 0 8px rgba(255, 68, 68, 0);
-            }
-
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
-            }
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); }
+            70% { transform: scale(1.2); box-shadow: 0 0 0 8px rgba(255, 68, 68, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); }
         }
 
         button {
@@ -78,9 +67,7 @@
             border-radius: 4px;
         }
 
-            button:hover {
-                background-color: #5D4037;
-            }
+        button:hover { background-color: #5D4037; }
 
         .request-item {
             background: #fff;
@@ -93,30 +80,15 @@
             border-radius: 5px;
         }
 
-        .info-area {
-            flex-grow: 1;
-            text-align: left;
-        }
-
-        .actions {
-            gap: 10px;
-            display: flex;
-        }
-
-        .btn-accept {
-            background-color: #2E7D32;
-            font-size: 0.8rem;
-        }
-
-        .btn-reject {
-            background-color: #C62828;
-            font-size: 0.8rem;
-        }
+        .info-area { flex-grow: 1; text-align: left; }
+        .actions { gap: 10px; display: flex; }
+        .btn-accept { background-color: #2E7D32; font-size: 0.8rem; }
+        .btn-reject { background-color: #C62828; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-    <audio id="notif-sound" src="Sounds\Notif.mp3" preload="auto"></audio>
+    <audio id="notif-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
     <div class="admin-panel">
         <div id="login-section">
@@ -167,22 +139,25 @@
                 if (payload.new.status === 'pending') {
                     playNotif();
                     showDots(payload.new.type);
-                    loadItems();
+                    loadItems(); 
                 }
             })
             .subscribe();
 
         window.askForAccess = function () {
             const pass = prompt("Enter Secret Key:");
-            if (pass === 'OMGSKIBIDITOILET6769621420') {
+            // Encoded password check to prevent casual snooping
+            if (btoa(pass) === 'T01HU0tJQklESVRPSUxFVDY3Njk2MjE0MjA=') {
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
                 loadItems();
+            } else {
+                alert("Incorrect Key");
             }
         };
 
         function playNotif() {
-            document.getElementById('notif-sound').play().catch(e => console.log("Sound muted by browser"));
+            document.getElementById('notif-sound').play().catch(e => console.log("Sound interaction required"));
         }
 
         function showDots(type) {
@@ -228,16 +203,16 @@
                     const div = document.createElement('div');
                     div.className = 'request-item';
                     div.innerHTML = `
-                            <div class="info-area">
-                                <strong>${item.title}</strong><br>
-                                <small><a href="${item.url}" target="_blank">View File</a></small>
-                            </div>
-                            <div class="actions">
-                                <button onclick="renameItem(${item.id}, '${item.title}')" style="background:#f39c12; font-size:0.7rem;">Rename</button>
-                                ${filterStatus === 'pending' ? `<button class="btn-accept" onclick="updateStatus(${item.id}, 'approved')">Approve</button>` : ''}
-                                <button class="btn-reject" onclick="deleteItem(${item.id})">Delete</button>
-                            </div>
-                        `;
+                        <div class="info-area">
+                            <strong>${item.title}</strong><br>
+                            <small><a href="${item.url}" target="_blank">View File</a></small>
+                        </div>
+                        <div class="actions">
+                            <button onclick="renameItem(${item.id}, '${item.title}')" style="background:#f39c12; font-size:0.7rem;">Rename</button>
+                            ${filterStatus === 'pending' ? `<button class="btn-accept" onclick="updateStatus(${item.id}, 'approved')">Approve</button>` : ''}
+                            <button class="btn-reject" onclick="deleteItem(${item.id})">Delete</button>
+                        </div>
+                    `;
                     list.appendChild(div);
                 });
             } else {
