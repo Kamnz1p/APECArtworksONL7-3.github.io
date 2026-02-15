@@ -144,16 +144,26 @@
             })
             .subscribe();
 
-        window.askForAccess = function () {
-            const pass = prompt("Idk bout ya but you're not allowed.");
-            if (btoa(pass) === 'T01HU0tJQklESVRPSUxFVDY3Njk2MjE0MjA=') {
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('dashboard-section').style.display = 'block';
-                loadItems();
-            } else {
-                alert("Incorrect Key");
-            }
-        };
+window.askForAccess = async function () {
+    const pass = prompt("Enter Secret Key:");
+    if (!pass) return;
+
+    const encoder = new TextEncoder();
+    const data = encoder.encode(pass);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+    const secretFingerprint = '697472097e3359850123512140a775f05327245558d047e17441864115e51025';
+
+    if (hashHex === secretFingerprint) {
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('dashboard-section').style.display = 'block';
+        loadItems();
+    } else {
+        alert("Access Denied");
+    }
+};
 
         function playNotif() {
             document.getElementById('notif-sound').play().catch(e => console.log("Sound interaction required"));
@@ -241,4 +251,5 @@
     </script>
 </body>
 </html>
+
 
