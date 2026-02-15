@@ -149,19 +149,20 @@ window.askForAccess = async function () {
     if (!pass) return;
 
     const encoder = new TextEncoder();
-    const data = encoder.encode(pass);
+    const data = encoder.encode(pass.trim());
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
     const secretFingerprint = '0ba8c23645fe89231967f413572dc86158a85f08c5aa9b75ef91bb61739fe801';
 
-    if (hashHex.trim() === secretFingerprint.trim()) {
+    if (hashHex === secretFingerprint) {
+        console.log("Access Granted");
         document.getElementById('login-section').style.display = 'none';
         document.getElementById('dashboard-section').style.display = 'block';
         loadItems();
     } else {
-        alert("Access Denied\nYour Hash: " + hashHex + "\nRequired: " + secretFingerprint);
+        alert("Access Denied!");
     }
 };
 
@@ -251,5 +252,6 @@ window.askForAccess = async function () {
     </script>
 </body>
 </html>
+
 
 
