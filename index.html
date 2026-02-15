@@ -1,0 +1,346 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arts Month Celebration by ONL 7-3</title>
+
+    <!-- Importing Google Fonts to match the aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Sans:opsz,wght@9..40,400;500;700&family=Merriweather:wght@300;700&display=swap" rel="stylesheet">
+
+    <style>
+        /*
+         * ==========================================
+         * CORE LAYOUT ARCHITECTURE (DO NOT EDIT)
+         * ==========================================
+         */
+
+        :root {
+            /* Palette Extraction */
+            --c-brown-dark: #3E2723; /* Deep brown for borders/text */
+            --c-brown-text: #2c1e16; /* Body text color */
+            --c-beige-bg: #FFF3E0; /* Main content background */
+            --c-beige-btn: #D7CCC8; /* Button color matching reference */
+            --c-stroke: #1a1a1a; /* Text outline color */
+            --c-text-fill: #EFEBE9; /* Vintage text fill */
+            /* Dimensions */
+            --header-height: 320px;
+            --border-thickness: 0px;
+            --content-width: 900px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--c-beige-bg);
+            font-family: 'DM Sans', sans-serif;
+            color: var(--c-brown-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- HEADER REGION (LOCKED LAYOUT) --- */
+        .header-wrapper {
+            position: relative;
+            height: var(--header-height);
+            width: 100%;
+            overflow: visible; /* Allows leaves to hang over */
+            border-bottom: var(--border-thickness) solid var(--c-brown-dark);
+            box-shadow: 0 10px 0 #D7CCC8 inset; /* The thin light line inside the border */
+            z-index: 5;
+        }
+
+        /* The Scenic Background */
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            object-fit: cover;
+            object-position: center 40%;
+        }
+
+        /* The Black Slanted Shape on the Left */
+        .header-slant-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 35%; /* Adjusts how far right the black shape goes */
+            background-color: #1a1512;
+            z-index: 2;
+            clip-path: polygon(0 0, 100% 0, 50% 100%, 0% 100%);
+        }
+
+        /* Title Container Positioning */
+        .title-group {
+            position: absolute;
+            top: 50%;
+            right: 15%; /* Pushes text to the right side */
+            transform: translateY(-50%);
+            z-index: 3;
+            text-align: right;
+            pointer-events: none; /* Prevents accidental layout drag */
+        }
+
+        /* Typography Styles */
+        h1.main-title {
+            font-family: 'Alfa Slab One', serif;
+            font-size: 4rem;
+            color: var(--c-text-fill);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            -webkit-text-stroke: 2px var(--c-stroke);
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+            margin-bottom: -10px;
+            white-space: nowrap;
+        }
+
+        p.sub-title {
+            font-family: 'Alfa Slab One', serif;
+            font-size: 1.8rem;
+            color: var(--c-text-fill);
+            -webkit-text-stroke: 1.5px var(--c-stroke);
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+            display: inline-block;
+        }
+
+            p.sub-title span {
+                font-family: 'DM Sans', sans-serif;
+                font-weight: 700;
+            }
+
+        /* --- DECORATIVE LEAVES (LOCKED POSITIONING) --- */
+        .leaf {
+            position: absolute;
+            z-index: 10; /* Must sit on top of the border */
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+            pointer-events: none;
+        }
+
+        .leaf-left {
+            bottom: -30px;
+            left: -20px;
+            width: 250px;
+            transform: rotate(10deg);
+        }
+
+        .leaf-right {
+            bottom: -40px;
+            right: -20px;
+            width: 250px;
+            transform: scaleX(-1) rotate(10deg); /* Mirror effect */
+        }
+
+        /* --- NAVIGATION STRIP --- */
+        .nav-strip {
+            width: 100%;
+            background-color: var(--c-brown-dark);
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 150px;
+            /* Small shadow to separate from content */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 4;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            background-color: var(--c-beige-btn);
+            color: var(--c-brown-dark);
+            /* Typography matching the heavy reference style */
+            font-family: 'Alfa Slab One', serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            /* Shape matching the reference (Pill shape) */
+            padding: 12px 50px;
+            border-radius: 50px;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+            .nav-btn:hover {
+                background-color: var(--c-beige-bg);
+                transform: scale(1.05);
+                box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            }
+
+        /* --- CONTENT REGION --- */
+        .content-wrapper {
+            max-width: var(--content-width);
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+            /* Added for leaf positioning */
+            position: relative;
+        }
+
+        h2.section-header {
+            font-family: 'Alfa Slab One', serif;
+            color: var(--c-brown-dark);
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            position: relative; /* Ensure text is above background elements */
+            z-index: 2;
+        }
+
+        .body-text {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.5rem;
+            /* Updated to match palette (Deep Brown #2c1e16) instead of black */
+            color: var(--c-brown-text);
+            text-align: justify;
+            text-align-last: center;
+            line-height: 1.8;
+            padding: 0 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* [NEW] Specific Style for Conclusion Leaf */
+        .leaf-conclusion {
+            position: absolute;
+            top: -60px; /* Moves it slightly above the text start */
+            left: -120px; /* Moves it to the left side */
+            width: 280px; /* Size of the branch */
+            z-index: 1; /* Behind the text */
+            pointer-events: none;
+            opacity: 0.9;
+            transform: rotate(-10deg);
+        }
+
+        /* Mobile Responsiveness Protection */
+        @media (max-width: 768px) {
+            :root {
+                --header-height: 200px;
+            }
+
+            h1.main-title {
+                font-size: 2.5rem;
+            }
+
+            .leaf {
+                width: 150px;
+            }
+
+            /* Adjust conclusion leaf for mobile so it doesn't get cut off */
+            .leaf-conclusion {
+                width: 150px;
+                left: -20px;
+                top: -50px;
+                opacity: 0.6;
+            }
+
+            .header-slant-overlay {
+                width: 50%;
+            }
+
+            .nav-strip {
+                flex-direction: column;
+                padding: 20px;
+                gap: 15px;
+            }
+
+            .nav-btn {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================================================================= -->
+    <!-- SECTION 1: HEADER (Layout Protected)                              -->
+    <!-- ================================================================= -->
+    <header class="header-wrapper">
+
+        <!-- [LOCKED] Background Landscape Image -->
+        <!-- Source: Albert Bierstadt - Among the Sierra Nevada, California (Public Domain) -->
+        <img class="header-bg"
+             src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg/1920px-Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg"
+             alt="Summit of the Sierras Painting">
+
+        <!-- [LOCKED] Geometric Shapes & Decor -->
+        <div class="header-slant-overlay"></div>
+
+        <!-- [LOCKED] Leaf Decorations -->
+        <img class="leaf leaf-left" src="images/branches.png" alt="Decorative Leaf">
+        <img class="leaf leaf-right" src="images/branches.png" alt="Decorative Leaf">
+
+        <!-- [EDITABLE REGION: HEADER TEXT] -->
+        <div class="title-group">
+            <h1 class="main-title">
+                <!-- EDIT TEXT BELOW -->
+                Arts Month Celebration
+            </h1>
+            <p class="sub-title">
+                <!-- EDIT TEXT BELOW -->
+                <span style="font-size: 1.0em; -webkit-text-stroke: 0; font-family:'Edwardian Script ITC'; color: #fff;">by ONL 7-3</span>
+            </p>
+        </div>
+
+    </header>
+
+    <!-- ================================================================= -->
+    <!-- SECTION 2: NAVIGATION STRIP                                       -->
+    <!-- ================================================================= -->
+    <!-- Moved outside content-wrapper to allow full-width background -->
+    <nav class="nav-strip">
+        <!-- [EDITABLE REGION: BUTTON LINKS & TEXT] -->
+        <a href="home.html" class="nav-btn">Home</a>
+        <a href="sing.html" class="nav-btn">Video</a>
+        <a href="artwork.html" class="nav-btn">Artwork</a>
+    </nav>
+
+    <!-- ================================================================= -->
+    <!-- SECTION 3: MAIN CONTENT                                           -->
+    <!-- ================================================================= -->
+    <main class="content-wrapper">
+
+        <!-- [NEW] Decorative Leaf for Conclusion -->
+        <img class="leaf-conclusion"
+             src="https://media.canva.com/v2/image-resize/format:PNG/height:480/quality:100/uri:ifs%3A%2F%2FM%2Fbf77d221-b5d2-4392-b4bb-bfd026c6ce76/watermark:F/width:800?csig=AAAAAAAAAAAAAAAAAAAAAGOktaDpCgfPN-ri3V_t6loL6r12g-lQy3_F4dmVlctU&amp;exp=1771157317&amp;osig=AAAAAAAAAAAAAAAAAAAAAIgVHkuN0xS0wRhnIzPOsK-sYnnOv5lJLq6_mtqtbTQz&amp;signer=media-rpc&amp;x-canva-quality=screen"
+             alt="Decorative Branch">
+
+        <!-- [EDITABLE REGION: HEADING] -->
+        <h2 class="section-header">
+            ONL 7-3 Conclusion
+        </h2>
+
+        <!-- [EDITABLE REGION: BODY TEXT] -->
+        <div class="body-text">
+            In conclusion, art has always been an important part of human
+            history, from the beautiful sculptures and pottery of Ancient
+            Greece to the lively dances, songs, and artworks we celebrate
+            during National Arts Month in the Philippines. Throughout time, art
+            has allowed people to express their beliefs, culture, and identity in
+            creative ways. Whether through graceful folk dances like Mazurka
+            Boholana or ancient statues honoring the gods, art continues to
+            connect generations and inspire creativity. By appreciating and
+            supporting the arts, we help preserve our traditions and encourage
+            future artists to share their talents with the world.
+        </div>
+
+    </main>
+
+</body>
+</html>
