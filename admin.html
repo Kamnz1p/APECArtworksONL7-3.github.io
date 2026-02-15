@@ -145,8 +145,7 @@
             .subscribe();
 
         window.askForAccess = function () {
-            const pass = prompt("Enter Secret Key:");
-            // Encoded password check to prevent casual snooping
+            const pass = prompt("Idk bout ya but you're not allowed.");
             if (btoa(pass) === 'T01HU0tJQklESVRPSUxFVDY3Njk2MjE0MjA=') {
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
@@ -242,3 +241,4 @@
     </script>
 </body>
 </html>
+
