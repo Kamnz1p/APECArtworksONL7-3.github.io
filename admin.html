@@ -144,28 +144,26 @@
             })
             .subscribe();
 
-        window.askForAccess = async function () {
-            const pass = prompt("Enter Secret Key:");
-            if (!pass) return;
+window.askForAccess = async function () {
+    const pass = prompt("Enter Secret Key:");
+    if (!pass) return;
 
-            const encoder = new TextEncoder();
-            const data = encoder.encode(pass);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    const encoder = new TextEncoder();
+    const data = encoder.encode(pass);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-            alert("hash:\n" + hashHex);
+    const secretFingerprint = '0ba8c23645fe89231967f413572dc86158a85f08c5aa9b75ef91bb61739fe801';
 
-            const secretFingerprint = '0ba8c23645fe89231967f413572dc86158a85f08c5aa9b75ef91bb61739fe801';
-
-            if (hashHex === secretFingerprint) {
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('dashboard-section').style.display = 'block';
-                loadItems();
-            } else {
-                alert("Access Denied");
-            }
-        };
+    if (hashHex.trim() === secretFingerprint.trim()) {
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('dashboard-section').style.display = 'block';
+        loadItems();
+    } else {
+        alert("Access Denied\nYour Hash: " + hashHex + "\nRequired: " + secretFingerprint);
+    }
+};
 
         function playNotif() {
             document.getElementById('notif-sound').play().catch(e => console.log("Sound interaction required"));
@@ -253,4 +251,5 @@
     </script>
 </body>
 </html>
+
 
