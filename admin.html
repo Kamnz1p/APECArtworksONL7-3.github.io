@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        body {
+            background-color: #3E2723;
+            color: #FFF3E0;
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .admin-panel {
+            background-color: #FFF3E0;
+            color: #3E2723;
+            width: 100%;
+            max-width: 800px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .nav-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 12px;
+            height: 12px;
+            background-color: #ff4444;
+            border-radius: 50%;
+            border: 2px solid white;
+            display: none;
+            animation: pulse-ring 1.5s infinite;
+            z-index: 10;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7);
+            }
+
+            70% {
+                transform: scale(1.2);
+                box-shadow: 0 0 0 8px rgba(255, 68, 68, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
+            }
+        }
+
+        button {
+            background-color: #3E2723;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+            button:hover {
+                background-color: #5D4037;
+            }
+
+        .request-item {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+        }
+
+        .info-area {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .actions {
+            gap: 10px;
+            display: flex;
+        }
+
+        .btn-accept {
+            background-color: #2E7D32;
+            font-size: 0.8rem;
+        }
+
+        .btn-reject {
+            background-color: #C62828;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="notif-sound" src="Sounds\Notif.mp3" preload="auto"></audio>
+
+    <div class="admin-panel">
+        <div id="login-section">
+            <h2>Admin Access</h2>
+            <button onclick="askForAccess()">Enter Dashboard</button>
+        </div>
+
+        <div id="dashboard-section" style="display:none;">
+            <div style="margin-bottom: 10px;">
+                <div class="nav-wrapper">
+                    <button onclick="setStatusFilter('pending')" id="status-pending">Pending Requests</button>
+                    <div id="dot-pending" class="notification-badge"></div>
+                </div>
+                <button onclick="setStatusFilter('approved')" id="status-live" style="background:#8D6E63; opacity:0.5;">Live Content</button>
+            </div>
+
+            <div style="margin-bottom: 20px; background: #EFEBE9; padding: 10px; border-radius: 5px;">
+                <div class="nav-wrapper">
+                    <button onclick="setTypeFilter('image')" id="type-art" style="font-size:0.8rem;">Artwork Tab</button>
+                    <div id="dot-art" class="notification-badge"></div>
+                </div>
+                <div class="nav-wrapper">
+                    <button onclick="setTypeFilter('media')" id="type-sing" style="font-size:0.8rem;">Sing Tab</button>
+                    <div id="dot-sing" class="notification-badge"></div>
+                </div>
+            </div>
+
+            <h2 id="view-title">Pending Artwork</h2>
+            <div id="item-list"></div>
+            <p id="empty-msg" style="display:none; color: #888; margin: 20px;">Nothing found in this category.</p>
+
+            <button onclick="location.reload()" style="margin-top:20px; background:#555; width:100%;">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        const supabaseUrl = 'https://wesnjqnsxvuvrojyqmrz.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc25qcW5zeHZ1dnJvanlxbXJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5Mzc3NzgsImV4cCI6MjA4NjUxMzc3OH0.ho0VapGgtrQIdedZUFRoJXhgKUosBtfHDU2O6RYXOAs';
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        let filterStatus = 'pending';
+        let filterType = 'image';
+
+        // Realtime Listener
+        supabaseClient
+            .channel('admin-changes')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, payload => {
+                if (payload.new.status === 'pending') {
+                    playNotif();
+                    showDots(payload.new.type);
+                    loadItems();
+                }
+            })
+            .subscribe();
+
+        window.askForAccess = function () {
+            const pass = prompt("Enter Secret Key:");
+            if (pass === 'OMGSKIBIDITOILET6769621420') {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'block';
+                loadItems();
+            }
+        };
+
+        function playNotif() {
+            document.getElementById('notif-sound').play().catch(e => console.log("Sound muted by browser"));
+        }
+
+        function showDots(type) {
+            document.getElementById('dot-pending').style.display = 'block';
+            if (type === 'image') document.getElementById('dot-art').style.display = 'block';
+            else document.getElementById('dot-sing').style.display = 'block';
+        }
+
+        function setStatusFilter(status) {
+            filterStatus = status;
+            document.getElementById('status-pending').style.opacity = status === 'pending' ? '1' : '0.5';
+            document.getElementById('status-live').style.opacity = status === 'approved' ? '1' : '0.5';
+            if (status === 'pending') document.getElementById('dot-pending').style.display = 'none';
+            loadItems();
+        }
+
+        function setTypeFilter(type) {
+            filterType = type;
+            document.getElementById('type-art').style.opacity = type === 'image' ? '1' : '0.5';
+            document.getElementById('type-sing').style.opacity = type === 'media' ? '1' : '0.5';
+            if (type === 'image') document.getElementById('dot-art').style.display = 'none';
+            else document.getElementById('dot-sing').style.display = 'none';
+            loadItems();
+        }
+
+        async function loadItems() {
+            let query = supabaseClient.from('posts').select('*').eq('status', filterStatus);
+            if (filterType === 'image') {
+                query = query.eq('type', 'image');
+                document.getElementById('view-title').innerText = `${filterStatus === 'pending' ? 'Pending' : 'Live'} Artwork`;
+            } else {
+                query = query.in('type', ['audio', 'video']);
+                document.getElementById('view-title').innerText = `${filterStatus === 'pending' ? 'Pending' : 'Live'} Songs/Videos`;
+            }
+
+            const { data } = await query;
+            const list = document.getElementById('item-list');
+            list.innerHTML = "";
+
+            if (data && data.length > 0) {
+                document.getElementById('empty-msg').style.display = 'none';
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'request-item';
+                    div.innerHTML = `
+                            <div class="info-area">
+                                <strong>${item.title}</strong><br>
+                                <small><a href="${item.url}" target="_blank">View File</a></small>
+                            </div>
+                            <div class="actions">
+                                <button onclick="renameItem(${item.id}, '${item.title}')" style="background:#f39c12; font-size:0.7rem;">Rename</button>
+                                ${filterStatus === 'pending' ? `<button class="btn-accept" onclick="updateStatus(${item.id}, 'approved')">Approve</button>` : ''}
+                                <button class="btn-reject" onclick="deleteItem(${item.id})">Delete</button>
+                            </div>
+                        `;
+                    list.appendChild(div);
+                });
+            } else {
+                document.getElementById('empty-msg').style.display = 'block';
+            }
+        }
+
+        window.renameItem = async (id, oldTitle) => {
+            const newTitle = prompt("Enter new title:", oldTitle);
+            if (newTitle && newTitle !== oldTitle) {
+                await supabaseClient.from('posts').update({ title: newTitle }).eq('id', id);
+                loadItems();
+            }
+        };
+
+        window.updateStatus = async (id, status) => {
+            await supabaseClient.from('posts').update({ status }).eq('id', id);
+            loadItems();
+        };
+
+        window.deleteItem = async (id) => {
+            if (confirm("Permanently delete?")) {
+                await supabaseClient.from('posts').delete().eq('id', id);
+                loadItems();
+            }
+        };
+    </script>
+</body>
+</html>

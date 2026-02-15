@@ -1,0 +1,275 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sing - Arts Month Celebration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Sans:opsz,wght@9..40,400;500;700&family=Merriweather:wght@300;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --c-brown-dark: #3E2723;
+            --c-brown-text: #2c1e16;
+            --c-beige-bg: #FFF3E0;
+            --c-beige-btn: #D7CCC8;
+            --c-stroke: #1a1a1a;
+            --c-text-fill: #EFEBE9;
+            --header-height: 320px;
+            --content-width: 900px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--c-beige-bg);
+            font-family: 'DM Sans', sans-serif;
+            color: var(--c-brown-text);
+            line-height: 1.6;
+        }
+
+        /* Header & Nav Styles */
+        .header-wrapper {
+            position: relative;
+            height: var(--header-height);
+            width: 100%;
+            box-shadow: 0 10px 0 #D7CCC8 inset;
+            z-index: 5;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            object-fit: cover;
+            object-position: center 40%;
+        }
+
+        .header-slant-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 35%;
+            background-color: #1a1512;
+            z-index: 2;
+            clip-path: polygon(0 0, 100% 0, 50% 100%, 0% 100%);
+        }
+
+        .title-group {
+            position: absolute;
+            top: 50%;
+            right: 15%;
+            transform: translateY(-50%);
+            z-index: 3;
+            text-align: right;
+            pointer-events: none;
+        }
+
+        h1.main-title {
+            font-family: 'Alfa Slab One', serif;
+            font-size: 3.5rem;
+            color: var(--c-text-fill);
+            -webkit-text-stroke: 2px var(--c-stroke);
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+        }
+
+        .nav-strip {
+            width: 100%;
+            background-color: var(--c-brown-dark);
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            z-index: 4;
+            position: relative;
+        }
+
+        .nav-btn {
+            background-color: var(--c-beige-btn);
+            color: var(--c-brown-dark);
+            font-family: 'Alfa Slab One', serif;
+            text-decoration: none;
+            padding: 12px 40px;
+            border-radius: 50px;
+            transition: 0.2s;
+        }
+
+            .nav-btn.active {
+                background-color: var(--c-beige-bg);
+            }
+
+        /* Two Column Layout */
+        .renditions-grid {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .column-header {
+            font-family: 'Alfa Slab One', serif;
+            color: var(--c-brown-dark);
+            border-bottom: 3px solid var(--c-brown-dark);
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+        }
+
+        .content-wrapper {
+            max-width: var(--content-width);
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .upload-container {
+            background: #fff;
+            border: 3px dashed var(--c-brown-dark);
+            border-radius: 10px;
+            padding: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .song-card {
+            background: white;
+            padding: 12px;
+            border: 2px solid var(--c-brown-dark);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 4px 4px 0px var(--c-beige-btn);
+        }
+
+            .song-card video {
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                border-radius: 5px;
+                background: #000;
+            }
+
+            .song-card audio {
+                width: 100%;
+            }
+
+            .song-card strong {
+                font-size: 0.9rem;
+                display: block;
+                margin-bottom: 5px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+        @media (max-width: 768px) {
+            .renditions-grid {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-wrapper">
+        <img class="header-bg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg/1920px-Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg">
+        <div class="header-slant-overlay"></div>
+        <div class="title-group"><h1 class="main-title">Arts Month Celebration</h1></div>
+    </header>
+
+    <nav class="nav-strip">
+        <a href="home.html" class="nav-btn">Home</a>
+        <a href="sing.html" class="nav-btn active">Video</a>
+        <a href="artwork.html" class="nav-btn">Artwork</a>
+    </nav>
+
+    <main class="content-wrapper">
+        <h2 style="font-family: 'Alfa Slab One'; font-size: 2.5rem; color: var(--c-brown-dark);">SHARE YOUR VIDEOS</h2>
+
+        <div class="upload-container">
+            <label for="media-upload" style="cursor:pointer; background: var(--c-brown-dark); color: #fff; padding: 10px 20px; border-radius: 5px; font-family: 'Alfa Slab One';">Choose File</label>
+            <input type="file" id="media-upload" style="display:none;" onchange="showFileName()">
+            <p id="file-name-display" style="margin-top:10px;">No file chosen</p>
+            <button id="upload-btn" onclick="uploadMedia()" style="display:none; margin-top:10px; padding: 10px 20px; background: #4CAF50; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+            <div id="loading-msg" style="display:none;">Uploading...</div>
+        </div>
+
+        <div class="renditions-grid">
+            <div class="column">
+                <h4 class="column-header">🎵 Singing</h4>
+                <div id="audio-target"></div>
+            </div>
+
+            <div class="column">
+                <h4 class="column-header">🎥 Videos</h4>
+                <div id="video-target"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const supabaseUrl = 'https://wesnjqnsxvuvrojyqmrz.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc25qcW5zeHZ1dnJvanlxbXJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5Mzc3NzgsImV4cCI6MjA4NjUxMzc3OH0.ho0VapGgtrQIdedZUFRoJXhgKUosBtfHDU2O6RYXOAs';
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        function showFileName() {
+            const input = document.getElementById('media-upload');
+            if (input.files.length > 0) {
+                document.getElementById('file-name-display').innerText = input.files[0].name;
+                document.getElementById('upload-btn').style.display = 'inline-block';
+            }
+        }
+
+        async function uploadMedia() {
+            const input = document.getElementById('media-upload');
+            const file = input.files[0];
+            if (!file) return;
+            document.getElementById('loading-msg').style.display = 'block';
+
+            const isVideo = file.type.includes('video');
+            const typeLabel = isVideo ? 'video' : 'audio';
+            const fileName = `${typeLabel}_${Date.now()}_${file.name}`;
+
+            const { data, error } = await supabaseClient.storage.from('content').upload(fileName, file);
+            if (error) { alert(error.message); return; }
+
+            const { data: urlData } = supabaseClient.storage.from('content').getPublicUrl(fileName);
+            await supabaseClient.from('posts').insert([{ title: file.name, type: typeLabel, url: urlData.publicUrl, status: 'pending' }]);
+
+            alert("Success! Sent to Admin.");
+            location.reload();
+        }
+
+        async function loadSongs() {
+            const { data } = await supabaseClient.from('posts').select('*').in('type', ['audio', 'video']).eq('status', 'approved');
+            const aTarget = document.getElementById('audio-target');
+            const vTarget = document.getElementById('video-target');
+
+            if (data) {
+                data.forEach(post => {
+                    const card = document.createElement('div');
+                    card.className = 'song-card';
+                    if (post.type === 'video') {
+                        card.innerHTML = `<strong>${post.title}</strong><video controls src="${post.url}"></video>`;
+                        vTarget.appendChild(card);
+                    } else {
+                        card.innerHTML = `<strong>${post.title}</strong><audio controls src="${post.url}"></audio>`;
+                        aTarget.appendChild(card);
+                    }
+                });
+            }
+        }
+        loadSongs();
+    </script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artwork - Arts Month Celebration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Sans:opsz,wght@9..40,400;500;700&family=Merriweather:wght@300;700&display=swap" rel="stylesheet">
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        /* [KEEP YOUR CSS] */
+        :root {
+            --c-brown-dark: #3E2723;
+            --c-brown-text: #2c1e16;
+            --c-beige-bg: #FFF3E0;
+            --c-beige-btn: #D7CCC8;
+            --c-stroke: #1a1a1a;
+            --c-text-fill: #EFEBE9;
+            --header-height: 320px;
+            --border-thickness: 0px;
+            --content-width: 900px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--c-beige-bg);
+            font-family: 'DM Sans', sans-serif;
+            color: var(--c-brown-text);
+            line-height: 1.6;
+        }
+
+        .header-wrapper {
+            position: relative;
+            height: var(--header-height);
+            width: 100%;
+            border-bottom: var(--border-thickness) solid var(--c-brown-dark);
+            box-shadow: 0 10px 0 #D7CCC8 inset;
+            z-index: 5;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            object-fit: cover;
+            object-position: center 40%;
+        }
+
+        .header-slant-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 35%;
+            background-color: #1a1512;
+            z-index: 2;
+            clip-path: polygon(0 0, 100% 0, 50% 100%, 0% 100%);
+        }
+
+        .title-group {
+            position: absolute;
+            top: 50%;
+            right: 15%;
+            transform: translateY(-50%);
+            z-index: 3;
+            text-align: right;
+            pointer-events: none;
+        }
+
+        h1.main-title {
+            font-family: 'Alfa Slab One', serif;
+            font-size: 3.5rem;
+            color: var(--c-text-fill);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            -webkit-text-stroke: 2px var(--c-stroke);
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+            margin-bottom: -10px;
+            white-space: nowrap;
+        }
+
+        p.sub-title {
+            font-family: 'Alfa Slab One', serif;
+            font-size: 1.8rem;
+            color: var(--c-text-fill);
+            -webkit-text-stroke: 1.5px var(--c-stroke);
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+            display: inline-block;
+        }
+
+        .leaf {
+            position: absolute;
+            z-index: 10;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+            pointer-events: none;
+        }
+
+        .leaf-left {
+            bottom: -30px;
+            left: -20px;
+            width: 250px;
+            transform: rotate(10deg);
+        }
+
+        .leaf-right {
+            bottom: -40px;
+            right: -20px;
+            width: 250px;
+            transform: scaleX(-1) rotate(10deg);
+        }
+
+        .nav-strip {
+            width: 100%;
+            background-color: var(--c-brown-dark);
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            gap: 150px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 4;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            background-color: var(--c-beige-btn);
+            color: var(--c-brown-dark);
+            font-family: 'Alfa Slab One', serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 12px 50px;
+            border-radius: 50px;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+            .nav-btn:hover {
+                background-color: var(--c-beige-bg);
+                transform: scale(1.05);
+                cursor: pointer;
+            }
+
+            .nav-btn.active {
+                background-color: var(--c-beige-bg);
+                transform: scale(1.05);
+                box-shadow: 0 0 15px rgba(255, 243, 224, 0.4);
+                pointer-events: none;
+            }
+
+        .content-wrapper {
+            max-width: var(--content-width);
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        h2.section-header {
+            font-family: 'Alfa Slab One', serif;
+            color: var(--c-brown-dark);
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .body-text {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.5rem;
+            color: var(--c-brown-text);
+            text-align: justify;
+            text-align-last: center;
+            line-height: 1.8;
+            padding: 0 10px;
+            margin-bottom: 40px;
+        }
+
+        .upload-container {
+            background-color: #fff;
+            border: 3px dashed var(--c-brown-dark);
+            border-radius: 10px;
+            padding: 40px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .custom-upload-btn {
+            display: inline-block;
+            background-color: var(--c-brown-dark);
+            color: #fff;
+            padding: 15px 40px;
+            font-family: 'Alfa Slab One', serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            transition: background 0.3s;
+        }
+
+            .custom-upload-btn:hover {
+                background-color: #5D4037;
+            }
+
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+
+        #file-name-display {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: var(--c-brown-dark);
+        }
+
+        #loading-msg {
+            display: none;
+            color: #E65100;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .art-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .art-card {
+            background: #fff;
+            padding: 15px;
+            border: 2px solid var(--c-brown-dark);
+            box-shadow: 6px 6px 0 rgba(62, 39, 35, 0.2);
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .art-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .art-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            display: block;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .art-title {
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --header-height: 200px;
+            }
+
+            h1.main-title {
+                font-size: 2rem;
+                white-space: normal;
+            }
+
+            .leaf {
+                width: 150px;
+            }
+
+            .nav-strip {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-wrapper">
+        <img class="header-bg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg/1920px-Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg" alt="Summit of the Sierras">
+        <div class="header-slant-overlay"></div>
+        <img class="leaf leaf-left" src="images/branches.png" alt="Leaf">
+        <img class="leaf leaf-right" src="images/branches.png" alt="Leaf">
+        <div class="title-group"><h1 class="main-title">Arts Month Celebration</h1><p class="sub-title"><span style="font-size: 1.0em; -webkit-text-stroke: 0; font-family:'Edwardian Script ITC'; color: #fff;">by ONL 7-3</span></p></div>
+    </header>
+
+    <nav class="nav-strip">
+        <a href="home.html" class="nav-btn">Home</a>
+        <a href="sing.html" class="nav-btn">Video</a>
+        <a href="artwork.html" class="nav-btn active">Artwork</a>
+    </nav>
+
+    <main class="content-wrapper">
+        <h2 class="section-header">ART GALLERY</h2>
+        <div class="body-text">Submit your own artwork below. Approved submissions appear here. Max 20MB.</div>
+
+        <div class="upload-container">
+            <h3 style="font-family: 'Alfa Slab One'; color: var(--c-brown-dark); margin-bottom: 20px;">SUBMIT ARTWORK</h3>
+            <label for="art-upload" class="custom-upload-btn">Choose Image File</label>
+            <input type="file" id="art-upload" class="file-input" accept="image/*" onchange="showFileName()">
+            <span id="file-name-display">No file chosen</span>
+            <button class="submit-btn" id="upload-btn" onclick="uploadArt()">Submit to Gallery</button>
+            <div id="loading-msg">Uploading... Please wait</div>
+        </div>
+
+        <div class="art-grid" id="gallery-grid"></div>
+    </main>
+
+    <script>
+        // 1. CONFIGURATION
+        const supabaseUrl = 'https://wesnjqnsxvuvrojyqmrz.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc25qcW5zeHZ1dnJvanlxbXJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5Mzc3NzgsImV4cCI6MjA4NjUxMzc3OH0.ho0VapGgtrQIdedZUFRoJXhgKUosBtfHDU2O6RYXOAs';
+
+        // 2. INITIALIZATION (Renamed to avoid conflict with the library name)
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        // 3. FUNCTIONS
+        function showFileName() {
+            const input = document.getElementById('art-upload');
+            if (input.files.length > 0) {
+                document.getElementById('file-name-display').innerText = input.files[0].name;
+                document.getElementById('upload-btn').style.display = 'inline-block';
+            }
+        }
+
+        async function uploadArt() {
+            const input = document.getElementById('art-upload');
+            const file = input.files[0];
+            if (!file) return;
+
+            if (file.size > 20 * 1024 * 1024) {
+                alert("File too big! Max 20MB.");
+                return;
+            }
+
+            document.getElementById('loading-msg').style.display = 'block';
+            document.getElementById('upload-btn').style.display = 'none';
+
+            const fileName = `art_${Date.now()}_${file.name}`;
+
+            // Use the renamed supabaseClient here
+            const { data, error } = await supabaseClient.storage.from('content').upload(fileName, file);
+
+            if (error) {
+                alert("Upload failed: " + error.message);
+                location.reload();
+                return;
+            }
+
+            const { data: urlData } = supabaseClient.storage.from('content').getPublicUrl(fileName);
+            const publicUrl = urlData.publicUrl;
+
+            const { error: dbError } = await supabaseClient.from('posts').insert([
+                { title: file.name, type: 'image', url: publicUrl, status: 'pending' }
+            ]);
+
+            if (dbError) {
+                alert("Database error: " + dbError.message);
+            } else {
+                alert("Success! Sent to Admin for approval.");
+                location.reload();
+            }
+        }
+
+        async function loadGallery() {
+            const { data, error } = await supabaseClient
+                .from('posts')
+                .select('*')
+                .eq('type', 'image')
+                .eq('status', 'approved');
+
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = "";
+
+            if (data && data.length > 0) {
+                data.forEach(post => {
+                    const card = `
+                <div class="art-card">
+                    <img src="${post.url}" class="art-image" alt="Artwork">
+                    <div class="art-title">${post.title}</div>
+                </div>`;
+                    grid.innerHTML += card;
+                });
+            } else {
+                grid.innerHTML = "<p>No approved artwork yet.</p>";
+            }
+        }
+
+        loadGallery();
+    </script>
+</body>
+</html>

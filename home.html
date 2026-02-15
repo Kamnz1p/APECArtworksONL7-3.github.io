@@ -1,0 +1,298 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Arts Month Celebration</title>
+
+    <!-- Importing Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Sans:opsz,wght@9..40,400;500;700&family=Merriweather:wght@300;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* [CORE CSS] */
+        :root {
+            --c-brown-dark: #3E2723;
+            --c-brown-text: #2c1e16;
+            --c-beige-bg: #FFF3E0;
+            --c-beige-btn: #D7CCC8;
+            --c-stroke: #1a1a1a;
+            --c-text-fill: #EFEBE9;
+            --header-height: 320px;
+            --border-thickness: 0px;
+            --content-width: 1000px; /* Increased slightly to fit image+text */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        @keyframes pageEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            background-color: var(--c-beige-bg);
+            font-family: 'DM Sans', sans-serif;
+            color: var(--c-brown-text);
+            line-height: 1.6;
+            animation: pageEnter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .header-wrapper {
+            position: relative;
+            height: var(--header-height);
+            width: 100%;
+            border-bottom: var(--border-thickness) solid var(--c-brown-dark);
+            box-shadow: 0 10px 0 #D7CCC8 inset;
+            z-index: 5;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            object-fit: cover;
+            object-position: center 40%;
+        }
+
+        .header-slant-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 35%;
+            background-color: #1a1512;
+            z-index: 2;
+            clip-path: polygon(0 0, 100% 0, 50% 100%, 0% 100%);
+        }
+
+        .title-group {
+            position: absolute;
+            top: 50%;
+            right: 15%;
+            transform: translateY(-50%);
+            z-index: 3;
+            text-align: right;
+            pointer-events: none;
+        }
+
+        h1.main-title {
+            font-family: 'Alfa Slab One', serif;
+            font-size: 3.5rem;
+            color: var(--c-text-fill);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            -webkit-text-stroke: 2px var(--c-stroke);
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+            margin-bottom: -10px;
+            white-space: nowrap;
+        }
+
+        p.sub-title {
+            font-family: 'Alfa Slab One', serif;
+            font-size: 1.8rem;
+            color: var(--c-text-fill);
+            -webkit-text-stroke: 1.5px var(--c-stroke);
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+            display: inline-block;
+        }
+
+        .leaf {
+            position: absolute;
+            z-index: 10;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+            pointer-events: none;
+        }
+
+        .leaf-left {
+            bottom: -30px;
+            left: -20px;
+            width: 250px;
+            transform: rotate(10deg);
+        }
+
+        .leaf-right {
+            bottom: -40px;
+            right: -20px;
+            width: 250px;
+            transform: scaleX(-1) rotate(10deg);
+        }
+
+        .nav-strip {
+            width: 100%;
+            background-color: var(--c-brown-dark);
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 150px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 4;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            background-color: var(--c-beige-btn);
+            color: var(--c-brown-dark);
+            font-family: 'Alfa Slab One', serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 12px 50px;
+            border-radius: 50px;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+            .nav-btn:hover {
+                background-color: var(--c-beige-bg);
+                transform: scale(1.05);
+                cursor: pointer;
+            }
+
+            .nav-btn.active {
+                background-color: var(--c-beige-bg);
+                transform: scale(1.05);
+                box-shadow: 0 0 15px rgba(255, 243, 224, 0.4);
+                pointer-events: none;
+            }
+
+        .content-wrapper {
+            max-width: var(--content-width);
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        h2.section-header {
+            font-family: 'Alfa Slab One', serif;
+            color: var(--c-brown-dark);
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        /* [NEW] Layout for Image + Text */
+        .content-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px; /* Space between image and text */
+            text-align: left;
+        }
+
+        .side-image {
+            width: 300px;
+            height: auto;
+            flex-shrink: 0; /* Prevents image from getting squished */
+            filter: drop-shadow(5px 5px 0px var(--c-brown-dark)); /* Adds the vintage shadow */
+            transform: rotate(-2deg); /* Slight tilt for style */
+        }
+
+        .body-text {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.5rem;
+            color: var(--c-brown-text);
+            text-align: justify;
+            /* Removed center-last for better readability next to image */
+            line-height: 1.8;
+            padding: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --header-height: 200px;
+            }
+
+            h1.main-title {
+                font-size: 2rem;
+                white-space: normal;
+            }
+
+            .leaf {
+                width: 150px;
+            }
+
+            .nav-strip {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            /* Stack image on mobile */
+            .content-row {
+                flex-direction: column;
+            }
+
+            .side-image {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-wrapper">
+        <img class="header-bg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg/1920px-Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg" alt="Summit of the Sierras Painting">
+        <div class="header-slant-overlay"></div>
+        <img class="leaf leaf-left" src="images/branches.png" alt="Decorative Leaf">
+        <img class="leaf leaf-right" src="images/branches.png" alt="Decorative Leaf">
+
+        <div class="title-group">
+            <h1 class="main-title">Arts Month Celebration</h1>
+            <p class="sub-title"><span style="font-size: 1.0em; -webkit-text-stroke: 0; font-family:'Edwardian Script ITC'; color: #fff;">by ONL 7-3</span></p>
+        </div>
+    </header>
+
+    <nav class="nav-strip">
+        <a href="home.html" class="nav-btn active">Home</a>
+        <a href="sing.html" class="nav-btn">Video</a>
+        <a href="artwork.html" class="nav-btn">Artwork</a>
+    </nav>
+
+    <main class="content-wrapper">
+        <h2 class="section-header">THE ORIGIN OF ART</h2>
+
+        <!-- [NEW] Flexbox Row -->
+        <div class="content-row">
+            <!-- Image on Left -->
+            <img src="https://media-public.canva.com/eccDI/MAEwneeccDI/1/s.png" class="side-image" alt="Arts Icon">
+
+            <!-- Text on Right -->
+            <div class="body-text">
+                Every February, our country celebrates National Arts Month, a
+                special time to honor Filipino creativity and talent in dancing,
+                singing, and artwork. Led by the National Commission for Culture
+                and the Arts, this celebration highlights traditional dances like
+                Mazurka Boholana, which shows grace and elegance, along with
+                beautiful songs and creative artworks that reflect our culture
+                and history. Through these activities, students and communities express
+                their talents, appreciate our rich heritage, and keep our traditions
+                alive for future generations.
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>
