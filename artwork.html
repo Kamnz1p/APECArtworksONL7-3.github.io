@@ -1,15 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artwork - Arts Month Celebration</title>
     <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Sans:opsz,wght@9..40,400;500;700&family=Merriweather:wght@300;700&display=swap" rel="stylesheet">
-    <!-- Supabase JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        /* [KEEP YOUR CSS] */
         :root {
             --c-brown-dark: #3E2723;
             --c-brown-text: #2c1e16;
@@ -19,7 +17,7 @@
             --c-text-fill: #EFEBE9;
             --header-height: 320px;
             --border-thickness: 0px;
-            --content-width: 900px;
+            --content-width: 1000px;
         }
 
         * {
@@ -97,27 +95,6 @@
             display: inline-block;
         }
 
-        .leaf {
-            position: absolute;
-            z-index: 10;
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-            pointer-events: none;
-        }
-
-        .leaf-left {
-            bottom: -30px;
-            left: -20px;
-            width: 250px;
-            transform: rotate(10deg);
-        }
-
-        .leaf-right {
-            bottom: -40px;
-            right: -20px;
-            width: 250px;
-            transform: scaleX(-1) rotate(10deg);
-        }
-
         .nav-strip {
             width: 100%;
             background-color: var(--c-brown-dark);
@@ -145,18 +122,17 @@
             border: none;
         }
 
-            .nav-btn:hover {
-                background-color: var(--c-beige-bg);
-                transform: scale(1.05);
-                cursor: pointer;
-            }
+        .nav-btn:hover {
+            background-color: var(--c-beige-bg);
+            transform: scale(1.05);
+            cursor: pointer;
+        }
 
-            .nav-btn.active {
-                background-color: var(--c-beige-bg);
-                transform: scale(1.05);
-                box-shadow: 0 0 15px rgba(255, 243, 224, 0.4);
-                pointer-events: none;
-            }
+        .nav-btn.active {
+            background-color: var(--c-beige-bg);
+            transform: scale(1.05);
+            pointer-events: none;
+        }
 
         .content-wrapper {
             max-width: var(--content-width);
@@ -174,15 +150,45 @@
             letter-spacing: 1px;
         }
 
-        .body-text {
+        /* NEW HISTORY SECTION STYLES */
+        .history-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 60px;
+            box-shadow: 8px 8px 0 rgba(62, 39, 35, 0.1);
+            text-align: left;
+        }
+
+        .history-text {
+            flex: 1.2;
             font-family: 'DM Sans', sans-serif;
-            font-size: 1.5rem;
-            color: var(--c-brown-text);
-            text-align: justify;
-            text-align-last: center;
+            font-size: 1.2rem;
             line-height: 1.8;
-            padding: 0 10px;
-            margin-bottom: 40px;
+            color: var(--c-brown-text);
+        }
+
+        .history-images {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .history-images img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border: 2px solid var(--c-brown-dark);
+            border-radius: 4px;
+        }
+
+        .history-images img:first-child {
+            grid-column: span 2;
+            height: 200px;
         }
 
         .upload-container {
@@ -191,12 +197,9 @@
             border-radius: 10px;
             padding: 40px;
             margin-bottom: 50px;
-            text-align: center;
         }
 
-        .file-input {
-            display: none;
-        }
+        .file-input { display: none; }
 
         .custom-upload-btn {
             display: inline-block;
@@ -208,12 +211,7 @@
             cursor: pointer;
             border-radius: 5px;
             margin-bottom: 10px;
-            transition: background 0.3s;
         }
-
-            .custom-upload-btn:hover {
-                background-color: #5D4037;
-            }
 
         .submit-btn {
             background-color: #4CAF50;
@@ -225,7 +223,6 @@
             cursor: pointer;
             font-family: 'DM Sans', sans-serif;
             font-weight: bold;
-            margin-top: 20px;
             display: none;
         }
 
@@ -236,18 +233,10 @@
             color: var(--c-brown-dark);
         }
 
-        #loading-msg {
-            display: none;
-            color: #E65100;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-
         .art-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
-            margin-top: 20px;
         }
 
         .art-card {
@@ -255,14 +244,7 @@
             padding: 15px;
             border: 2px solid var(--c-brown-dark);
             box-shadow: 6px 6px 0 rgba(62, 39, 35, 0.2);
-            transition: transform 0.2s;
-            display: flex;
-            flex-direction: column;
         }
-
-            .art-card:hover {
-                transform: translateY(-5px);
-            }
 
         .art-image {
             width: 100%;
@@ -274,37 +256,10 @@
             background-color: #f9f9f9;
         }
 
-        .art-title {
-            font-family: 'Merriweather', serif;
-            font-weight: 700;
-            font-size: 1.1rem;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
-        }
-
         @media (max-width: 768px) {
-            :root {
-                --header-height: 200px;
-            }
-
-            h1.main-title {
-                font-size: 2rem;
-                white-space: normal;
-            }
-
-            .leaf {
-                width: 150px;
-            }
-
-            .nav-strip {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .nav-btn {
-                width: 100%;
-                max-width: 300px;
-            }
+            .history-container { flex-direction: column; padding: 20px; }
+            h1.main-title { font-size: 2rem; white-space: normal; }
+            .nav-strip { flex-direction: column; gap: 15px; }
         }
     </style>
 </head>
@@ -312,9 +267,7 @@
     <header class="header-wrapper">
         <img class="header-bg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg/1920px-Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg" alt="Summit of the Sierras">
         <div class="header-slant-overlay"></div>
-        <img class="leaf leaf-left" src="images/branches.png" alt="Leaf">
-        <img class="leaf leaf-right" src="images/branches.png" alt="Leaf">
-        <div class="title-group"><h1 class="main-title">Arts Month Celebration</h1><p class="sub-title"><span style="font-size: 1.0em; -webkit-text-stroke: 0; font-family:'Edwardian Script ITC'; color: #fff;">by ONL 7-3</span></p></div>
+        <div class="title-group"><h1 class="main-title">Arts Month Celebration</h1><p class="sub-title"><span style="font-size: 1.0em; font-family:'Edwardian Script ITC'; color: #fff;">by ONL 7-3</span></p></div>
     </header>
 
     <nav class="nav-strip">
@@ -325,7 +278,17 @@
 
     <main class="content-wrapper">
         <h2 class="section-header">ART GALLERY</h2>
-        <div class="body-text">Submit your own artwork below. Approved submissions appear here. Max 20MB.</div>
+
+        <section class="history-container">
+            <div class="history-text">
+                <p>The origin of art in ancient Greece began as early as the Minoan and Mycenaean civilizations, but it fully developed during the time of Ancient Greece around the 8th century BCE. Greek art was deeply influenced by religion, mythology, and daily life, often honoring gods like Zeus and Athena through sculptures, pottery, and temples. Early artworks showed simple geometric patterns, but over time, artists focused on realism, balance, and proportion, especially in statues of the human body. Greek art became the foundation of Western art because of its beauty, harmony, and attention to detail, influencing many cultures for centuries.</p>
+            </div>
+            <div class="history-images">
+                <img src="https://media.canva.com/v2/image-resize/format:JPG/height:800/quality:92/uri:ifs%3A%2F%2FM%2F061a45a4-06b0-4cdc-938b-9d646c0e6368/watermark:F/width:625?csig=AAAAAAAAAAAAAAAAAAAAAFTDMdqsLLnpLlWFLvWq5fxnu_6DxS7Mux94n7KkGVDv&exp=1771229911&osig=AAAAAAAAAAAAAAAAAAAAAGCxqC8A5Ie8lof1lSQaZDPFuVusqxOK4DlN1uPt8bEm&signer=media-rpc&x-canva-quality=screen" alt="Greek Art 1">
+                <img src="https://media.canva.com/v2/image-resize/format:JPG/height:800/quality:92/uri:ifs%3A%2F%2FM%2Fd8f8e423-4a63-4582-9908-613ab3235c4c/watermark:F/width:658?csig=AAAAAAAAAAAAAAAAAAAAAKVu_RV675xnhR7NZYMcgr2OS1bW62fH6mnJMSuupbXC&exp=1771226572&osig=AAAAAAAAAAAAAAAAAAAAAC_aX2XzKEaTGBml6f_zXR4IE14K_7rtLJqqM2kbuRX-&signer=media-rpc&x-canva-quality=screen" alt="Greek Art 2">
+                <img src="https://media.canva.com/v2/image-resize/format:JPG/height:800/quality:92/uri:ifs%3A%2F%2FM%2F7518976c-7e79-4ed2-a7be-2b7e11c6b289/watermark:F/width:660?csig=AAAAAAAAAAAAAAAAAAAAAFTPvCuYb6lCU507-AnsYmVA3bLydXSBuVqKMlurU6ue&exp=1771230107&osig=AAAAAAAAAAAAAAAAAAAAAAJA7D-SpnG-goxgBVhwM0X0FGyhs5SwAUE7ex1VygTr&signer=media-rpc&x-canva-quality=screen" alt="Greek Art 3">
+            </div>
+        </section>
 
         <div class="upload-container">
             <h3 style="font-family: 'Alfa Slab One'; color: var(--c-brown-dark); margin-bottom: 20px;">SUBMIT ARTWORK</h3>
@@ -333,21 +296,17 @@
             <input type="file" id="art-upload" class="file-input" accept="image/*" onchange="showFileName()">
             <span id="file-name-display">No file chosen</span>
             <button class="submit-btn" id="upload-btn" onclick="uploadArt()">Submit to Gallery</button>
-            <div id="loading-msg">Uploading... Please wait</div>
+            <div id="loading-msg" style="display:none; color: #E65100; font-weight: bold; margin-top: 15px;">Uploading... Please wait</div>
         </div>
 
         <div class="art-grid" id="gallery-grid"></div>
     </main>
 
     <script>
-        // 1. CONFIGURATION
         const supabaseUrl = 'https://wesnjqnsxvuvrojyqmrz.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indlc25qcW5zeHZ1dnJvanlxbXJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA5Mzc3NzgsImV4cCI6MjA4NjUxMzc3OH0.ho0VapGgtrQIdedZUFRoJXhgKUosBtfHDU2O6RYXOAs';
-
-        // 2. INITIALIZATION (Renamed to avoid conflict with the library name)
         const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-        // 3. FUNCTIONS
         function showFileName() {
             const input = document.getElementById('art-upload');
             if (input.files.length > 0) {
@@ -370,8 +329,6 @@
             document.getElementById('upload-btn').style.display = 'none';
 
             const fileName = `art_${Date.now()}_${file.name}`;
-
-            // Use the renamed supabaseClient here
             const { data, error } = await supabaseClient.storage.from('content').upload(fileName, file);
 
             if (error) {
