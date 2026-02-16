@@ -23,7 +23,7 @@
             background-color: #FFF3E0;
             color: #3E2723;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px; /* Made slightly wider to fit new buttons */
             padding: 40px;
             border-radius: 8px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
@@ -81,9 +81,13 @@
         }
 
         .info-area { flex-grow: 1; text-align: left; }
-        .actions { gap: 10px; display: flex; }
+        .actions { gap: 5px; display: flex; flex-wrap: wrap; justify-content: flex-end; }
+        
+        /* Button Colors */
         .btn-accept { background-color: #2E7D32; font-size: 0.8rem; }
         .btn-reject { background-color: #C62828; font-size: 0.8rem; }
+        .btn-rename { background-color: #f39c12; font-size: 0.8rem; }
+        .btn-switch { background-color: #3498db; font-size: 0.8rem; } /* Blue for switching */
     </style>
 </head>
 <body>
@@ -144,27 +148,26 @@
             })
             .subscribe();
 
-window.askForAccess = async function () {
-    const pass = prompt("Enter Secret Key:");
-    if (!pass) return;
+        window.askForAccess = async function () {
+            const pass = prompt("Enter Secret Key:");
+            if (!pass) return;
 
-    const encoder = new TextEncoder();
-    const data = encoder.encode(pass.trim());
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            const encoder = new TextEncoder();
+            const data = encoder.encode(pass.trim());
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-    const secretFingerprint = '0ba8c23645fe89231967f413572dc86158a85f08c5aa9b75ef91bb61739fe801';
+            const secretFingerprint = '0ba8c23645fe89231967f413572dc86158a85f08c5aa9b75ef91bb61739fe801';
 
-    if (hashHex === secretFingerprint) {
-        console.log("Access Granted");
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('dashboard-section').style.display = 'block';
-        loadItems();
-    } else {
-        alert("Access Denied!");
-    }
-};
+            if (hashHex === secretFingerprint) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'block';
+                loadItems();
+            } else {
+                alert("Access Denied!");
+            }
+        };
 
         function playNotif() {
             document.getElementById('notif-sound').play().catch(e => console.log("Sound interaction required"));
@@ -199,6 +202,7 @@ window.askForAccess = async function () {
                 query = query.eq('type', 'image');
                 document.getElementById('view-title').innerText = `${filterStatus === 'pending' ? 'Pending' : 'Live'} Artwork`;
             } else {
+                // Fetch both audio and video for the "Sing" tab
                 query = query.in('type', ['audio', 'video']);
                 document.getElementById('view-title').innerText = `${filterStatus === 'pending' ? 'Pending' : 'Live'} Songs/Videos`;
             }
@@ -212,13 +216,28 @@ window.askForAccess = async function () {
                 data.forEach(item => {
                     const div = document.createElement('div');
                     div.className = 'request-item';
+                    
+                    // Determine File Type Badge
+                    const typeBadge = item.type === 'video' ? '🎥 VIDEO' : (item.type === 'audio' ? '🎵 AUDIO' : '🖼️ IMG');
+                    
+                    // Logic for the Switch Button
+                    let switchBtn = '';
+                    if (filterType === 'media') {
+                        if (item.type === 'video') {
+                            switchBtn = `<button class="btn-switch" onclick="toggleMediaType(${item.id}, 'video')">→ To Singing</button>`;
+                        } else if (item.type === 'audio') {
+                            switchBtn = `<button class="btn-switch" onclick="toggleMediaType(${item.id}, 'audio')">→ To Video</button>`;
+                        }
+                    }
+
                     div.innerHTML = `
                         <div class="info-area">
-                            <strong>${item.title}</strong><br>
-                            <small><a href="${item.url}" target="_blank">View File</a></small>
+                            <strong>${item.title}</strong> <span style="font-size:0.7em; background:#ccc; padding:2px 5px; border-radius:3px;">${typeBadge}</span><br>
+                            <small><a href="${item.url}" target="_blank">View/Play File</a></small>
                         </div>
                         <div class="actions">
-                            <button onclick="renameItem(${item.id}, '${item.title}')" style="background:#f39c12; font-size:0.7rem;">Rename</button>
+                            ${switchBtn}
+                            <button class="btn-rename" onclick="renameItem(${item.id}, '${item.title}')">Rename</button>
                             ${filterStatus === 'pending' ? `<button class="btn-accept" onclick="updateStatus(${item.id}, 'approved')">Approve</button>` : ''}
                             <button class="btn-reject" onclick="deleteItem(${item.id})">Delete</button>
                         </div>
@@ -229,6 +248,15 @@ window.askForAccess = async function () {
                 document.getElementById('empty-msg').style.display = 'block';
             }
         }
+
+        // [NEW] Function to Switch between Audio and Video columns
+        window.toggleMediaType = async (id, currentType) => {
+            const newType = currentType === 'video' ? 'audio' : 'video';
+            const { error } = await supabaseClient.from('posts').update({ type: newType }).eq('id', id);
+            
+            if(error) alert("Error switching: " + error.message);
+            else loadItems(); // Refresh to update badge and button
+        };
 
         window.renameItem = async (id, oldTitle) => {
             const newTitle = prompt("Enter new title:", oldTitle);
@@ -252,6 +280,3 @@ window.askForAccess = async function () {
     </script>
 </body>
 </html>
-
-
-
