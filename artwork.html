@@ -33,6 +33,27 @@
             line-height: 1.6;
         }
 
+        .leaf {
+            position: absolute;
+            z-index: 10;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+            pointer-events: none;
+        }
+
+        .leaf-left {
+            bottom: -30px;
+            left: -20px;
+            width: 250px;
+            transform: rotate(10deg);
+        }
+
+        .leaf-right {
+            bottom: -40px;
+            right: -20px;
+            width: 250px;
+            transform: scaleX(-1) rotate(10deg);
+        }
+
         .header-wrapper {
             position: relative;
             height: var(--header-height);
@@ -276,6 +297,9 @@
         <a href="artwork.html" class="nav-btn active">Artwork</a>
     </nav>
 
+        <img class="leaf leaf-left" src="images/branches.png" alt="Decorative Leaf">
+        <img class="leaf leaf-right" src="images/branches.png" alt="Decorative Leaf">
+
     <main class="content-wrapper">
         <h2 class="section-header">ART GALLERY</h2>
 
@@ -380,5 +404,6 @@
     </script>
 </body>
 </html>
+
 
 
