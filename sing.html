@@ -52,6 +52,27 @@
             object-position: center 40%;
         }
 
+        .leaf {
+            position: absolute;
+            z-index: 10;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+            pointer-events: none;
+        }
+
+        .leaf-left {
+            bottom: -30px;
+            left: -20px;
+            width: 250px;
+            transform: rotate(10deg);
+        }
+
+        .leaf-right {
+            bottom: -40px;
+            right: -20px;
+            width: 250px;
+            transform: scaleX(-1) rotate(10deg);
+        }
+
         .header-slant-overlay {
             position: absolute;
             top: 0;
@@ -191,6 +212,9 @@
                 <span style="font-size: 1.0em; -webkit-text-stroke: 0; font-family:'Edwardian Script ITC'; color: #ffffff;">by ONL 7-3</span>
             </p>
 
+            <img class="leaf leaf-left" src="images/branches.png" alt="Decorative Leaf">
+            <img class="leaf leaf-right" src="images/branches.png" alt="Decorative Leaf">
+
     <nav class="nav-strip">
         <a href="home.html" class="nav-btn">Home</a>
         <a href="sing.html" class="nav-btn active">Video</a>
@@ -278,4 +302,5 @@
 </body>
 
 </html>
+
 
