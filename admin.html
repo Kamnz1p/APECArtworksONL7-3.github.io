@@ -23,7 +23,7 @@
             background-color: #FFF3E0;
             color: #3E2723;
             width: 100%;
-            max-width: 900px; /* Made slightly wider to fit new buttons */
+            max-width: 900px;
             padding: 40px;
             border-radius: 8px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
@@ -81,7 +81,7 @@
         }
 
         .info-area { flex-grow: 1; text-align: left; }
-        .actions { gap: 5px; display: flex; flex-wrap: wrap; justify-content: flex-end; }
+        .actions { gap: 5px; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
         
         /* Button Colors */
         .btn-accept { background-color: #2E7D32; font-size: 0.8rem; }
@@ -101,6 +101,7 @@
         </div>
 
         <div id="dashboard-section" style="display:none;">
+            <!-- Main Status Filter (Pending vs Live) -->
             <div style="margin-bottom: 10px;">
                 <div class="nav-wrapper">
                     <button onclick="setStatusFilter('pending')" id="status-pending">Pending Requests</button>
@@ -109,6 +110,7 @@
                 <button onclick="setStatusFilter('approved')" id="status-live" style="background:#8D6E63; opacity:0.5;">Live Content</button>
             </div>
 
+            <!-- Content Type Filter (Artwork vs Sing/Video) -->
             <div style="margin-bottom: 20px; background: #EFEBE9; padding: 10px; border-radius: 5px;">
                 <div class="nav-wrapper">
                     <button onclick="setTypeFilter('image')" id="type-art" style="font-size:0.8rem;">Artwork Tab</button>
@@ -152,12 +154,12 @@
             const pass = prompt("Enter Secret Key:");
             if (!pass) return;
 
+            // Simple Hash Check
             const encoder = new TextEncoder();
             const data = encoder.encode(pass.trim());
             const hashBuffer = await crypto.subtle.digest('SHA-256', data);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
             const secretFingerprint = '0ba8c23645fe89231967f413572dc86158a85f08c5aa9b75ef91bb61739fe801';
 
             if (hashHex === secretFingerprint) {
@@ -198,6 +200,8 @@
 
         async function loadItems() {
             let query = supabaseClient.from('posts').select('*').eq('status', filterStatus);
+            
+            // Filter Logic
             if (filterType === 'image') {
                 query = query.eq('type', 'image');
                 document.getElementById('view-title').innerText = `${filterStatus === 'pending' ? 'Pending' : 'Live'} Artwork`;
@@ -220,7 +224,7 @@
                     // Determine File Type Badge
                     const typeBadge = item.type === 'video' ? '🎥 VIDEO' : (item.type === 'audio' ? '🎵 AUDIO' : '🖼️ IMG');
                     
-                    // Logic for the Switch Button
+                    // Logic for the Switch Button (Available in BOTH pending and approved)
                     let switchBtn = '';
                     if (filterType === 'media') {
                         if (item.type === 'video') {
@@ -249,13 +253,17 @@
             }
         }
 
-        // [NEW] Function to Switch between Audio and Video columns
+        // Function to Switch between Audio and Video columns
         window.toggleMediaType = async (id, currentType) => {
             const newType = currentType === 'video' ? 'audio' : 'video';
             const { error } = await supabaseClient.from('posts').update({ type: newType }).eq('id', id);
             
-            if(error) alert("Error switching: " + error.message);
-            else loadItems(); // Refresh to update badge and button
+            if(error) {
+                alert("Error switching: " + error.message);
+            } else {
+                // If it was successful, reload the items so the badge and buttons update
+                loadItems(); 
+            }
         };
 
         window.renameItem = async (id, oldTitle) => {
