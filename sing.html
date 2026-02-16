@@ -11,9 +11,9 @@
         :root {
             --c-brown-dark: #3E2723;
             --c-brown-text: #2c1e16;
-            --c-beige-bg: #F5F5F0; /* Updated to Antique Alabaster */
+            --c-beige-bg: #F5F5F0;
             --c-beige-btn: #D7CCC8;
-            --c-gold: #C5A059;     /* New Greek Gold */
+            --c-gold: #C5A059;
             --c-stroke: #1a1a1a;
             --c-text-fill: #EFEBE9;
             --header-height: 320px;
@@ -33,13 +33,14 @@
             line-height: 1.6;
         }
 
-        /* Header & Nav Styles */
+        /* HEADER SECTION - Layered specifically on top */
         .header-wrapper {
             position: relative;
             height: var(--header-height);
             width: 100%;
             border-bottom: 2px solid var(--c-gold);
-            z-index: 5;
+            overflow: hidden; /* Keeps leaves and overlays inside */
+            z-index: 1; 
         }
 
         .header-bg {
@@ -48,14 +49,25 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
+            z-index: 1; /* Lowest layer */
             object-fit: cover;
             object-position: center 40%;
         }
 
+        .header-slant-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 40%;
+            background-color: rgba(26, 21, 18, 0.85); /* Darker for text readability */
+            z-index: 2; /* Middle layer */
+            clip-path: polygon(0 0, 100% 0, 70% 100%, 0% 100%);
+        }
+
         .leaf {
             position: absolute;
-            z-index: 10;
+            z-index: 4; /* Higher layer to overlap text/bg */
             filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
             pointer-events: none;
         }
@@ -74,45 +86,37 @@
             transform: scaleX(-1) rotate(10deg);
         }
 
-        .header-slant-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 35%;
-            background-color: #1a1512;
-            z-index: 2;
-            clip-path: polygon(0 0, 100% 0, 50% 100%, 0% 100%);
-        }
-
+        /* The Title Group is now layered on top of the overlay and background */
         .title-group {
             position: absolute;
             top: 50%;
-            right: 15%;
+            left: 5%; /* Moved to left to align with the slant overlay layering */
             transform: translateY(-50%);
-            z-index: 3;
-            text-align: right;
+            z-index: 5; /* Highest layer for text */
+            text-align: left;
             pointer-events: none;
+            max-width: 60%;
         }
 
         h1.main-title {
             font-family: 'Alfa Slab One', serif;
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             color: var(--c-text-fill);
-            -webkit-text-stroke: 2px var(--c-stroke);
+            -webkit-text-stroke: 1.5px var(--c-stroke);
             text-shadow: 4px 4px 0px rgba(0,0,0,0.5);
-            line-height: 1;
+            line-height: 1.1;
         }
 
-        /* Subtitle placed inside title-group to be under h1 */
         .sub-title {
             font-family: 'Playfair Display', serif;
             font-size: 1.8rem;
             color: var(--c-gold);
-            margin-top: 10px;
+            margin-top: 5px;
             display: block;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
+        /* NAVIGATION */
         .nav-strip {
             width: 100%;
             background-color: var(--c-brown-dark);
@@ -120,7 +124,7 @@
             display: flex;
             justify-content: center;
             gap: 50px;
-            z-index: 4;
+            z-index: 10;
             position: relative;
             border-bottom: 3px solid var(--c-gold);
         }
@@ -136,18 +140,19 @@
             border: 1px solid var(--c-gold);
         }
 
-        .nav-btn:hover {
-            background-color: var(--c-gold);
-            color: white;
-            transform: scale(1.05);
-        }
-
         .nav-btn.active {
             background-color: var(--c-gold);
             color: white;
         }
 
-        /* Layout Styles */
+        /* CONTENT */
+        .content-wrapper {
+            max-width: var(--content-width);
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
         .renditions-grid {
             display: flex;
             gap: 30px;
@@ -155,10 +160,7 @@
             text-align: left;
         }
 
-        .column {
-            flex: 1;
-            min-width: 0;
-        }
+        .column { flex: 1; min-width: 0; }
 
         .column-header {
             font-family: 'Alfa Slab One', serif;
@@ -167,14 +169,6 @@
             margin-bottom: 20px;
             padding-bottom: 5px;
             text-transform: uppercase;
-            font-size: 1.2rem;
-        }
-
-        .content-wrapper {
-            max-width: var(--content-width);
-            margin: 60px auto;
-            padding: 0 20px;
-            text-align: center;
         }
 
         .upload-container {
@@ -183,7 +177,6 @@
             border-radius: 10px;
             padding: 40px;
             margin-bottom: 40px;
-            text-align: center;
         }
 
         .song-card {
@@ -195,33 +188,20 @@
             box-shadow: 4px 4px 15px rgba(0,0,0,0.05);
         }
 
-        .song-card video {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            border-radius: 5px;
-            background: #000;
-        }
-
-        .song-card audio { width: 100%; }
-
-        .song-card strong {
-            font-family: 'Playfair Display', serif;
-            font-size: 1rem;
-            display: block;
-            margin-bottom: 8px;
-            color: var(--c-brown-dark);
-        }
+        .song-card video { width: 100%; border-radius: 5px; background: #000; }
 
         @media (max-width: 768px) {
             .renditions-grid { flex-direction: column; }
-            h1.main-title { font-size: 2.2rem; }
-            .title-group { right: 5%; text-align: center; width: 90%; }
+            h1.main-title { font-size: 2rem; }
+            .header-slant-overlay { width: 100%; clip-path: none; }
+            .title-group { left: 50%; transform: translate(-50%, -50%); text-align: center; width: 90%; }
         }
     </style>
 </head>
 <body>
     <header class="header-wrapper">
         <img class="header-bg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg/1920px-Albert_Bierstadt_-_Among_the_Sierra_Nevada%2C_California_-_Google_Art_Project.jpg">
+        
         <div class="header-slant-overlay"></div>
         
         <div class="title-group">
@@ -229,8 +209,8 @@
             <span class="sub-title">by ONL 7-3</span>
         </div>
 
-        <img class="leaf leaf-left" src="images/branches.png" alt="Decorative Leaf">
-        <img class="leaf leaf-right" src="images/branches.png" alt="Decorative Leaf">
+        <img class="leaf leaf-left" src="images/branches.png" alt="Leaf">
+        <img class="leaf leaf-right" src="images/branches.png" alt="Leaf">
     </header>
 
     <nav class="nav-strip">
@@ -255,7 +235,6 @@
                 <h4 class="column-header">🎵 Singing</h4>
                 <div id="audio-target"></div>
             </div>
-
             <div class="column">
                 <h4 class="column-header">🎥 Videos</h4>
                 <div id="video-target"></div>
