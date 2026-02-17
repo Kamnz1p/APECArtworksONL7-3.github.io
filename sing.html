@@ -31,6 +31,7 @@
             font-family: 'DM Sans', sans-serif;
             color: var(--c-brown-text);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* HEADER SECTION */
@@ -65,7 +66,6 @@
             clip-path: polygon(0 0, 100% 0, 60% 100%, 0% 100%);
         }
 
-        /* Title Group positioned on the RIGHT and layered on top */
         .title-group {
             position: absolute;
             top: 50%;
@@ -150,7 +150,24 @@
             margin: 60px auto;
             padding: 0 20px;
             text-align: center;
+            position: relative;
         }
+
+        /* STRATEGIC IMAGE PLACEMENT STYLES */
+        .decor-img {
+            position: absolute;
+            z-index: -1;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15));
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        .img-palette { top: -40px; left: -140px; width: 130px; transform: rotate(-15deg); }
+        .img-lyre { top: 150px; right: -160px; width: 170px; transform: rotate(10deg); }
+        .img-sculpture { bottom: 10%; left: -180px; width: 150px; transform: rotate(-5deg); }
+        .img-pillar { bottom: -100px; right: -120px; width: 140px; transform: rotate(5deg); }
+        .img-badge { top: -20px; right: -80px; width: 100px; transform: rotate(12deg); }
+        .img-large { top: 40%; left: -250px; width: 220px; transform: rotate(-10deg); }
 
         .upload-container {
             background: #fff;
@@ -158,6 +175,8 @@
             border-radius: 10px;
             padding: 40px;
             margin-bottom: 40px;
+            position: relative;
+            z-index: 5;
         }
 
         .renditions-grid {
@@ -165,6 +184,8 @@
             gap: 30px;
             margin-top: 30px;
             text-align: left;
+            position: relative;
+            z-index: 5;
         }
 
         .column { flex: 1; min-width: 0; }
@@ -188,6 +209,10 @@
         }
 
         .song-card video { width: 100%; border-radius: 5px; background: #000; }
+
+        @media (max-width: 1250px) {
+            .decor-img { display: none; }
+        }
 
         @media (max-width: 768px) {
             .renditions-grid { flex-direction: column; }
@@ -218,6 +243,13 @@
     </nav>
 
     <main class="content-wrapper">
+        <img class="decor-img img-palette" src="https://media-public.canva.com/7zfVw/MAG0-X7zfVw/1/s.png">
+        <img class="decor-img img-lyre" src="https://media-public.canva.com/Tgv6M/MAEwnYTgv6M/1/t.png">
+        <img class="decor-img img-sculpture" src="https://media-public.canva.com/Czogk/MAFjIiCzogk/1/t.png">
+        <img class="decor-img img-pillar" src="https://media-public.canva.com/uYxt4/MAEudiuYxt4/1/t.png">
+        <img class="decor-img img-badge" src="https://media.canva.com/v2/image-resize/format:JPG/height:200/quality:75/uri:ifs%3A%2F%2FM%2Fd48c45f3-3f3a-4d81-bca7-3ae40f1e3f7c/watermark:F/width:112?csig=AAAAAAAAAAAAAAAAAAAAAMfrwf4xqssq2w3P-h6Gw5qwyoo1PhaGtuCMle8Zvxhh&exp=1771313151&osig=AAAAAAAAAAAAAAAAAAAAANlsrlGTw_rva-aEEPnCOiwDixHbHri-j1BiNQj15tGS&signer=media-rpc&x-canva-quality=thumbnail">
+        <img class="decor-img img-large" src="https://media.canva.com/v2/image-resize/format:PNG/height:800/quality:100/uri:ifs%3A%2F%2FM%2F142f8fbc-c80c-4691-a667-9e096d74f50d/watermark:F/width:372?csig=AAAAAAAAAAAAAAAAAAAAAJRzfOMQ0PlYYP-empSHaaqM_dCHX9zvYw5zyjKLAbsc&exp=1771315710&osig=AAAAAAAAAAAAAAAAAAAAAITGJMYAfDlnddFdh6VTnZCVzu6NPxQxcwBLIpErT9et&signer=media-rpc&x-canva-quality=screen">
+
         <h2 style="font-family: 'Alfa Slab One', serif; font-size: 2.5rem; color: var(--c-brown-dark); margin-bottom: 20px;">SHARE YOUR VIDEOS</h2>
 
         <div class="upload-container">
