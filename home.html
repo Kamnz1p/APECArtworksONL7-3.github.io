@@ -1,17 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Arts Month Celebration</title>
 
-    <!-- Importing Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=DM+Sans:opsz,wght@9..40,400;500;700&family=Merriweather:wght@300;700&display=swap" rel="stylesheet">
 
     <style>
-        /* [CORE CSS] */
         :root {
             --c-brown-dark: #3E2723;
             --c-brown-text: #2c1e16;
@@ -21,7 +19,7 @@
             --c-text-fill: #EFEBE9;
             --header-height: 320px;
             --border-thickness: 0px;
-            --content-width: 1000px; /* Increased slightly to fit image+text */
+            --content-width: 1000px;
         }
 
         * {
@@ -35,7 +33,6 @@
                 opacity: 0;
                 transform: translateY(15px);
             }
-
             100% {
                 opacity: 1;
                 transform: translateY(0);
@@ -57,27 +54,6 @@
             border-bottom: var(--border-thickness) solid var(--c-brown-dark);
             box-shadow: 0 10px 0 #D7CCC8 inset;
             z-index: 5;
-        }
-
-        .leaf {
-            position: absolute;
-            z-index: 10;
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-            pointer-events: none;
-        }
-
-        .leaf-left {
-            bottom: -30px;
-            left: -20px;
-            width: 250px;
-            transform: rotate(10deg);
-        }
-
-        .leaf-right {
-            bottom: -40px;
-            right: -20px;
-            width: 250px;
-            transform: scaleX(-1) rotate(10deg);
         }
 
         .header-bg {
@@ -182,18 +158,18 @@
             border: none;
         }
 
-            .nav-btn:hover {
-                background-color: var(--c-beige-bg);
-                transform: scale(1.05);
-                cursor: pointer;
-            }
+        .nav-btn:hover {
+            background-color: var(--c-beige-bg);
+            transform: scale(1.05);
+            cursor: pointer;
+        }
 
-            .nav-btn.active {
-                background-color: var(--c-beige-bg);
-                transform: scale(1.05);
-                box-shadow: 0 0 15px rgba(255, 243, 224, 0.4);
-                pointer-events: none;
-            }
+        .nav-btn.active {
+            background-color: var(--c-beige-bg);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 243, 224, 0.4);
+            pointer-events: none;
+        }
 
         .content-wrapper {
             max-width: var(--content-width);
@@ -211,21 +187,20 @@
             letter-spacing: 1px;
         }
 
-        /* [NEW] Layout for Image + Text */
         .content-row {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 40px; /* Space between image and text */
+            gap: 40px;
             text-align: left;
         }
 
         .side-image {
             width: 300px;
             height: auto;
-            flex-shrink: 0; /* Prevents image from getting squished */
-            filter: drop-shadow(5px 5px 0px var(--c-brown-dark)); /* Adds the vintage shadow */
-            transform: rotate(-2deg); /* Slight tilt for style */
+            flex-shrink: 0;
+            filter: drop-shadow(5px 5px 0px var(--c-brown-dark));
+            transform: rotate(-2deg);
         }
 
         .body-text {
@@ -233,40 +208,41 @@
             font-size: 1.5rem;
             color: var(--c-brown-text);
             text-align: justify;
-            /* Removed center-last for better readability next to image */
             line-height: 1.8;
             padding: 0 10px;
+        }
+
+        .question-line {
+            font-family: 'Alfa Slab One', serif;
+            display: block;
+            font-size: 1.8rem;
+            color: var(--c-brown-dark);
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         @media (max-width: 768px) {
             :root {
                 --header-height: 200px;
             }
-
             h1.main-title {
                 font-size: 2rem;
                 white-space: normal;
             }
-
             .leaf {
                 width: 150px;
             }
-
             .nav-strip {
                 flex-direction: column;
                 gap: 15px;
             }
-
             .nav-btn {
                 width: 100%;
                 max-width: 300px;
             }
-
-            /* Stack image on mobile */
             .content-row {
                 flex-direction: column;
             }
-
             .side-image {
                 width: 200px;
             }
@@ -295,26 +271,21 @@
     <main class="content-wrapper">
         <h2 class="section-header">THE ORIGIN OF ART</h2>
 
-        <!-- [NEW] Flexbox Row -->
         <div class="content-row">
-            <!-- Image on Left -->
             <img src="https://media-public.canva.com/eccDI/MAEwneeccDI/1/s.png" class="side-image" alt="Arts Icon">
 
-            <!-- Text on Right -->
             <div class="body-text">
-                Every February, our country celebrates National Arts Month, a
-                special time to honor Filipino creativity and talent in dancing,
-                singing, and artwork. Led by the National Commission for Culture
-                and the Arts, this celebration highlights traditional dances like
-                Mazurka Boholana, which shows grace and elegance, along with
-                beautiful songs and creative artworks that reflect our culture
-                and history. Through these activities, students and communities express
-                their talents, appreciate our rich heritage, and keep our traditions
-                alive for future generations.
+                <span class="question-line">What is National Arts Month?</span>
+                National Arts Month is celebrated in the Philippines every February. It was officially established
+                through Presidential Proclamation No. 683, signed on January 28, 1991, by President Corazon C.
+                Aquino. The celebration was created to recognize Filipino artistic excellence, preserve the
+                nation’s cultural heritage, and promote the seven major art disciplines. Since then, February has
+                been dedicated to honoring the creativity, talent, and contributions of Filipino artists.
+                APEC Schools commemorates National Arts Month by holding weeklong activities that highlight students’
+                creativity and talents. These events allow learners to participate in performances and artistic presentations,
+                making the celebration a meaningful school tradition.
             </div>
         </div>
-
     </main>
 </body>
-
 </html>
