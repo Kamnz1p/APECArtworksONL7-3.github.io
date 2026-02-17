@@ -45,6 +45,7 @@
             color: var(--c-brown-text);
             line-height: 1.6;
             animation: pageEnter 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            overflow-x: hidden;
         }
 
         .header-wrapper {
@@ -176,7 +177,24 @@
             margin: 60px auto;
             padding: 0 20px;
             text-align: center;
+            position: relative;
         }
+
+        /* DECORATIVE IMAGES */
+        .decor-img {
+            position: absolute;
+            z-index: -1;
+            filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.2));
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .img-palette { top: -40px; left: -150px; width: 150px; transform: rotate(-15deg); }
+        .img-lyre { bottom: 50px; right: -160px; width: 170px; transform: rotate(10deg); }
+        .img-sculpture { top: 250px; left: -180px; width: 190px; transform: rotate(-5deg); }
+        .img-pillar { top: -20px; right: -130px; width: 140px; transform: rotate(5deg); }
+        .img-badge { bottom: -60px; left: -100px; width: 120px; transform: rotate(-10deg); }
+        .img-large { top: 400px; right: -220px; width: 230px; transform: rotate(12deg); }
 
         h2.section-header {
             font-family: 'Alfa Slab One', serif;
@@ -193,6 +211,8 @@
             justify-content: center;
             gap: 40px;
             text-align: left;
+            position: relative;
+            z-index: 2;
         }
 
         .side-image {
@@ -219,6 +239,10 @@
             color: var(--c-brown-dark);
             margin-bottom: 10px;
             text-transform: uppercase;
+        }
+
+        @media (max-width: 1300px) {
+            .decor-img { display: none; }
         }
 
         @media (max-width: 768px) {
@@ -269,6 +293,13 @@
     </nav>
 
     <main class="content-wrapper">
+        <img class="decor-img img-palette" src="https://media-public.canva.com/7zfVw/MAG0-X7zfVw/1/s.png">
+        <img class="decor-img img-lyre" src="https://media-public.canva.com/Tgv6M/MAEwnYTgv6M/1/t.png">
+        <img class="decor-img img-sculpture" src="https://media-public.canva.com/Czogk/MAFjIiCzogk/1/t.png">
+        <img class="decor-img img-pillar" src="https://media-public.canva.com/uYxt4/MAEudiuYxt4/1/t.png">
+        <img class="decor-img img-badge" src="https://media.canva.com/v2/image-resize/format:JPG/height:200/quality:75/uri:ifs%3A%2F%2FM%2Fd48c45f3-3f3a-4d81-bca7-3ae40f1e3f7c/watermark:F/width:112?csig=AAAAAAAAAAAAAAAAAAAAAMfrwf4xqssq2w3P-h6Gw5qwyoo1PhaGtuCMle8Zvxhh&exp=1771313151&osig=AAAAAAAAAAAAAAAAAAAAANlsrlGTw_rva-aEEPnCOiwDixHbHri-j1BiNQj15tGS&signer=media-rpc&x-canva-quality=thumbnail">
+        <img class="decor-img img-large" src="https://media.canva.com/v2/image-resize/format:PNG/height:800/quality:100/uri:ifs%3A%2F%2FM%2F142f8fbc-c80c-4691-a667-9e096d74f50d/watermark:F/width:372?csig=AAAAAAAAAAAAAAAAAAAAAJRzfOMQ0PlYYP-empSHaaqM_dCHX9zvYw5zyjKLAbsc&exp=1771315710&osig=AAAAAAAAAAAAAAAAAAAAAITGJMYAfDlnddFdh6VTnZCVzu6NPxQxcwBLIpErT9et&signer=media-rpc&x-canva-quality=screen">
+
         <h2 class="section-header">THE ORIGIN OF ART</h2>
 
         <div class="content-row">
