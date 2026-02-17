@@ -31,6 +31,7 @@
             font-family: 'DM Sans', sans-serif;
             color: var(--c-brown-text);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .leaf {
@@ -143,7 +144,7 @@
             border: none;
         }
 
-            .nav-btn:hover {
+        .nav-btn:hover {
             background-color: #C5A059;
             color: #3E2723;
         }
@@ -159,7 +160,24 @@
             margin: 60px auto;
             padding: 0 20px;
             text-align: center;
+            position: relative;
         }
+
+        /* DECORATIVE IMAGE STYLES */
+        .decor-img {
+            position: absolute;
+            z-index: -1;
+            filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.2));
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        .img-palette { top: -20px; left: -120px; width: 140px; transform: rotate(-10deg); }
+        .img-lyre { top: 300px; right: -150px; width: 160px; transform: rotate(15deg); }
+        .img-sculpture { top: 600px; left: -160px; width: 180px; transform: rotate(-5deg); }
+        .img-pillar { bottom: 0px; right: -140px; width: 150px; transform: rotate(5deg); }
+        .img-badge { top: -40px; right: -60px; width: 110px; transform: rotate(10deg); }
+        .img-large { top: 450px; left: -240px; width: 220px; transform: rotate(-8deg); }
 
         h2.section-header {
             font-family: 'Alfa Slab One', serif;
@@ -170,7 +188,6 @@
             letter-spacing: 1px;
         }
 
-        /* NEW HISTORY SECTION STYLES */
         .history-container {
             display: flex;
             align-items: center;
@@ -182,6 +199,8 @@
             box-shadow: 8px 8px 0 rgba(62, 39, 35, 0.1);
             text-align: left;
             border-left: 5px solid #C5A059;
+            position: relative;
+            z-index: 2;
         }
 
         .history-text {
@@ -218,6 +237,8 @@
             border-radius: 10px;
             padding: 40px;
             margin-bottom: 50px;
+            position: relative;
+            z-index: 2;
         }
 
         .file-input { display: none; }
@@ -258,6 +279,8 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
+            position: relative;
+            z-index: 2;
         }
 
         .art-card {
@@ -275,6 +298,10 @@
             display: block;
             margin-bottom: 15px;
             background-color: #f9f9f9;
+        }
+
+        @media (max-width: 1300px) {
+            .decor-img { display: none; }
         }
 
         @media (max-width: 768px) {
@@ -301,6 +328,13 @@
         <img class="leaf leaf-right" src="images/branches.png" alt="Decorative Leaf">
 
     <main class="content-wrapper">
+        <img class="decor-img img-palette" src="https://media-public.canva.com/7zfVw/MAG0-X7zfVw/1/s.png">
+        <img class="decor-img img-lyre" src="https://media-public.canva.com/Tgv6M/MAEwnYTgv6M/1/t.png">
+        <img class="decor-img img-sculpture" src="https://media-public.canva.com/Czogk/MAFjIiCzogk/1/t.png">
+        <img class="decor-img img-pillar" src="https://media-public.canva.com/uYxt4/MAEudiuYxt4/1/t.png">
+        <img class="decor-img img-badge" src="https://media.canva.com/v2/image-resize/format:JPG/height:200/quality:75/uri:ifs%3A%2F%2FM%2Fd48c45f3-3f3a-4d81-bca7-3ae40f1e3f7c/watermark:F/width:112?csig=AAAAAAAAAAAAAAAAAAAAAMfrwf4xqssq2w3P-h6Gw5qwyoo1PhaGtuCMle8Zvxhh&exp=1771313151&osig=AAAAAAAAAAAAAAAAAAAAANlsrlGTw_rva-aEEPnCOiwDixHbHri-j1BiNQj15tGS&signer=media-rpc&x-canva-quality=thumbnail">
+        <img class="decor-img img-large" src="https://media.canva.com/v2/image-resize/format:PNG/height:800/quality:100/uri:ifs%3A%2F%2FM%2F142f8fbc-c80c-4691-a667-9e096d74f50d/watermark:F/width:372?csig=AAAAAAAAAAAAAAAAAAAAAJRzfOMQ0PlYYP-empSHaaqM_dCHX9zvYw5zyjKLAbsc&exp=1771315710&osig=AAAAAAAAAAAAAAAAAAAAAITGJMYAfDlnddFdh6VTnZCVzu6NPxQxcwBLIpErT9et&signer=media-rpc&x-canva-quality=screen">
+
         <h2 class="section-header">ART GALLERY</h2>
 
         <section class="history-container">
@@ -404,6 +438,3 @@
     </script>
 </body>
 </html>
-
-
-
